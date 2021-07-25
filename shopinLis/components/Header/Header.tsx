@@ -11,6 +11,10 @@ const Header = ({title}: HeaderProps) => {
   );
 };
 
+Header.defaultProps = {
+  title: 'ShopinLis',
+};
+
 const styles = StyleSheet.create({
   header: {
     height: 60,
