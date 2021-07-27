@@ -9,10 +9,11 @@
  */
 
 import React, {useState} from 'react';
-import {View, StyleSheet, FlatList} from 'react-native';
+import {View, StyleSheet, FlatList, Alert} from 'react-native';
 
 import Header from './components/Header';
 import ListItem from './components/ListItem';
+import AddItem from './components/AddItem';
 
 const App = () => {
   const initArray = [
@@ -42,9 +43,22 @@ const App = () => {
     });
   };
 
+  const addItem = (text: string) => {
+    if (!text) {
+      Alert.alert('Error', 'Please enter an item', [
+        {text: 'Ok', style: 'cancel'},
+      ]);
+    } else {
+      setItems(prevItems => {
+        return [{id: Math.random(), text}, ...prevItems];
+      });
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Header title="ShopinLis" />
+      <AddItem addItem={addItem} />
       <FlatList
         data={items}
         renderItem={({item}) => (
