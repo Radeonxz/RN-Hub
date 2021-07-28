@@ -4,7 +4,17 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 import {ListItemProps} from './ListItem.model';
 
-const ListItem = ({item: {id, text}, deleteItem}: ListItemProps) => {
+const ListItem = ({
+  item: {id, text},
+  isEditing,
+  editItemDetail,
+  checkedItems,
+  deleteItem,
+  editItem,
+  saveEditItem,
+  handleEditChange,
+  itemChecked,
+}: ListItemProps) => {
   return (
     <TouchableOpacity style={styles.listItem}>
       <View style={styles.listItemView}>

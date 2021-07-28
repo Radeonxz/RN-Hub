@@ -15,8 +15,10 @@ import Header from './components/Header';
 import ListItem from './components/ListItem';
 import AddItem from './components/AddItem';
 
+import {IItem} from './components/ListItem/ListItem.model';
+
 const App = () => {
-  const initArray = [
+  const initArray: Array<IItem> = [
     {
       id: Math.random(),
       text: 'Milk',
@@ -35,13 +37,13 @@ const App = () => {
     },
   ];
 
-  const [items, setItems] = useState(initArray);
-
-  const deleteItem = (id: number) => {
-    setItems(prevItems => {
-      return prevItems.filter(item => item.id !== id);
-    });
-  };
+  const [items, setItems] = useState<Array<IItem>>(initArray);
+  const [editStatus, editStatusChange] = useState<boolean>(false);
+  const [editItemDetail, editItemDetailChange] = useState<IItem>({
+    id: null,
+    text: null,
+  });
+  const [checkedItems, checkedItemChange] = useState<Array<IItem> | []>([]);
 
   const addItem = (text: string) => {
     if (!text) {
@@ -55,6 +57,47 @@ const App = () => {
     }
   };
 
+  const deleteItem = (id: number) => {
+    setItems(prevItems => {
+      return prevItems.filter(item => item.id !== id);
+    });
+  };
+
+  const handleEditChange = (text: string) => {
+    editItemDetailChange({id: editItemDetail.id, text});
+  };
+
+  const saveEditItem = (id: number) => {
+    setItems(prevItems => {
+      return prevItems.map(item =>
+        item.id === editItemDetail.id ? {id, text: editItemDetail.text} : item,
+      );
+    });
+    // Flip edit status back to false
+    editStatusChange(!editStatus);
+  };
+
+  const editItem = (id: number, text: string) => {
+    editItemDetailChange({
+      id,
+      text,
+    });
+    return editStatusChange(!editStatus);
+  };
+
+  const itemChecked = (id: number, text: string) => {
+    const isChecked = checkedItems.filter(checkedItem => checkedItem.id === id);
+    isChecked.length
+      ? // remove item from checked items state (uncheck)
+        checkedItemChange(prevItems => {
+          return [...prevItems.filter(item => item.id !== id)];
+        })
+      : // Add item to checked items state
+        checkedItemChange(prevItems => {
+          return [...prevItems.filter(item => item.id !== id), {id, text}];
+        });
+  };
+
   return (
     <View style={styles.container}>
       <Header title="ShopinLis" />
@@ -62,7 +105,17 @@ const App = () => {
       <FlatList
         data={items}
         renderItem={({item}) => (
-          <ListItem item={item} deleteItem={deleteItem} />
+          <ListItem
+            item={item}
+            isEditing={editStatus}
+            editItemDetail={editItemDetail}
+            checkedItems={checkedItems}
+            deleteItem={deleteItem}
+            editItem={editItem}
+            saveEditItem={saveEditItem}
+            handleEditChange={handleEditChange}
+            itemChecked={itemChecked}
+          />
         )}
       />
     </View>
