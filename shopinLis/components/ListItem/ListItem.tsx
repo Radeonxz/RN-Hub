@@ -1,11 +1,17 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 import {ListItemProps} from './ListItem.model';
 
 const ListItem = ({
-  item: {id, text},
+  item,
   isEditing,
   editItemDetail,
   checkedItems,
@@ -15,16 +21,57 @@ const ListItem = ({
   handleEditChange,
   itemChecked,
 }: ListItemProps) => {
+  const checked = checkedItems.filter(
+    checkedItem => checkedItem.id === item.id,
+  );
+
   return (
     <TouchableOpacity style={styles.listItem}>
       <View style={styles.listItemView}>
-        <Text style={styles.listItemText}>{text}</Text>
-        <Icon
-          name="remove"
-          size={20}
-          color="firebrick"
-          onPress={() => deleteItem(id)}
-        />
+        {isEditing && editItemDetail.id === item.id ? (
+          <TextInput
+            placeholder="Edit Item..."
+            style={styles.editItemInput}
+            onChangeText={handleEditChange}
+          />
+        ) : (
+          <Text
+            onPress={() =>
+              item.id && item.text && itemChecked(item.id, item.text)
+            }
+            style={
+              checked.length ? styles.checkedItemText : styles.listItemText
+            }>
+            {item.text}
+          </Text>
+        )}
+        <View style={styles.iconView}>
+          {isEditing && editItemDetail.id === item.id ? (
+            <Icon
+              name="save"
+              size={20}
+              color="green"
+              onPress={() => item.id && saveEditItem(item.id)}
+            />
+          ) : (
+            !checked.length && (
+              <Icon
+                name="pencil"
+                size={20}
+                color="blue"
+                onPress={() =>
+                  item.id && item.text && editItem(item.id, item.text)
+                }
+              />
+            )
+          )}
+          <Icon
+            name="remove"
+            size={20}
+            color="firebrick"
+            onPress={() => item.id && deleteItem(item.id)}
+          />
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -43,6 +90,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   listItemText: {
+    fontSize: 18,
+  },
+  checkedItemText: {
+    fontSize: 18,
+    textDecorationLine: 'line-through',
+    color: 'green',
+  },
+  iconView: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: 70,
+  },
+  editItemInput: {
+    padding: 0,
     fontSize: 18,
   },
 });
