@@ -12,10 +12,8 @@ import React, {useState} from 'react';
 import {View, StyleSheet, FlatList, Alert} from 'react-native';
 
 import Header from './components/Header';
-import ListItem from './components/ListItem';
+import {ListItem, IItem} from './components/ListItem';
 import AddItem from './components/AddItem';
-
-import {IItem} from './components/ListItem/ListItem.model';
 
 const App = () => {
   const initArray: Array<IItem> = [
