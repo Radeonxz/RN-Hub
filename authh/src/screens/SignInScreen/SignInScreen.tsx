@@ -10,6 +10,7 @@ import {
 import Logo from '../../../assets/images/Logo.png';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import SocialSignInButtons from '../../components/SocialSignInButtons';
 
 const SignInScreen = () => {
   const [username, setUsername] = useState<string>('');
@@ -27,10 +28,6 @@ const SignInScreen = () => {
 
   const onResetPasswordPressed = () => {
     console.warn('Reset password');
-  };
-
-  const onSignInOAuthPressed = (partner: string) => {
-    console.warn('Signing in with ', partner);
   };
 
   return (
@@ -61,24 +58,7 @@ const SignInScreen = () => {
           type="TERTIARY"
         />
 
-        <Button
-          onPress={() => onSignInOAuthPressed('Apple')}
-          text="Sign in with Apple"
-          bgColor="#e3e3e3"
-          fgColor="#363636"
-        />
-        <Button
-          onPress={() => onSignInOAuthPressed('Facebook')}
-          text="Sign in with Facebook"
-          bgColor="#e7eaf4"
-          fgColor="#4765a9"
-        />
-        <Button
-          onPress={() => onSignInOAuthPressed('Google')}
-          text="Sign in with Google"
-          bgColor="#fae9ea"
-          fgColor="#dd4d44"
-        />
+        <SocialSignInButtons />
 
         <Button
           onPress={onSignUpPressed}

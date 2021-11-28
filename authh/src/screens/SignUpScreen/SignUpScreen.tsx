@@ -1,36 +1,26 @@
 import React, {useState} from 'react';
-import {
-  ScrollView,
-  View,
-  StyleSheet,
-  useWindowDimensions,
-  Text,
-} from 'react-native';
+import {ScrollView, View, StyleSheet, Text} from 'react-native';
 
-import Logo from '../../../assets/images/Logo.png';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import SocialSignInButtons from '../../components/SocialSignInButtons';
 
 const SignUpScreen = () => {
   const [username, setUsername] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-
-  const {height} = useWindowDimensions();
-
-  const onSignInPressed = () => {
-    console.warn('Signing in...');
-  };
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
 
   const onSignUpPressed = () => {
     console.warn('Signing up...');
   };
 
-  const onResetPasswordPressed = () => {
-    console.warn('Reset password');
+  const onTermsOfUsePressed = () => {
+    console.warn('Terms of use pressed...');
   };
 
-  const onSignInOAuthPressed = (partner: string) => {
-    console.warn('Signing in with ', partner);
+  const onPrivacyPressed = () => {
+    console.warn('Privacy pressed...');
   };
 
   return (
@@ -44,41 +34,42 @@ const SignUpScreen = () => {
           secureTextEntry={false}
         />
         <Input
+          value={email}
+          setValue={setEmail}
+          placeholder="Email"
+          secureTextEntry={false}
+        />
+        <Input
           value={password}
           setValue={setPassword}
           placeholder="Password"
           secureTextEntry={true}
         />
-
-        <Button onPress={onSignInPressed} text="Sign in" />
-        <Button
-          onPress={onResetPasswordPressed}
-          text="Reset Password"
-          type="TERTIARY"
+        <Input
+          value={confirmPassword}
+          setValue={setConfirmPassword}
+          placeholder="Confirm password"
+          secureTextEntry={true}
         />
 
-        <Button
-          onPress={() => onSignInOAuthPressed('Apple')}
-          text="Sign in with Apple"
-          bgColor="#e3e3e3"
-          fgColor="#363636"
-        />
-        <Button
-          onPress={() => onSignInOAuthPressed('Facebook')}
-          text="Sign in with Facebook"
-          bgColor="#e7eaf4"
-          fgColor="#4765a9"
-        />
-        <Button
-          onPress={() => onSignInOAuthPressed('Google')}
-          text="Sign in with Google"
-          bgColor="#fae9ea"
-          fgColor="#dd4d44"
-        />
+        <Button onPress={onSignUpPressed} text="Sign up" />
+
+        <Text style={styles.text}>
+          By signing up, you confirm that you accept our{' '}
+          <Text style={styles.link} onPress={onTermsOfUsePressed}>
+            Terms of Use
+          </Text>{' '}
+          and{' '}
+          <Text style={styles.link} onPress={onPrivacyPressed}>
+            Privacy Policy
+          </Text>
+        </Text>
+
+        <SocialSignInButtons />
 
         <Button
           onPress={onSignUpPressed}
-          text="Don't have an account? Creat one!"
+          text="Already have an account? Sign in here!"
           type="TERTIARY"
         />
       </View>
@@ -96,6 +87,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#051C60',
     margin: 10,
+  },
+  text: {
+    color: 'gray',
+    marginVertical: 10,
+  },
+  link: {
+    color: '#FDB075',
   },
 });
 
