@@ -1,9 +1,16 @@
 import React, {useState} from 'react';
-import {View, Image, StyleSheet, useWindowDimensions} from 'react-native';
+import {
+  ScrollView,
+  View,
+  Image,
+  StyleSheet,
+  useWindowDimensions,
+} from 'react-native';
 
 import Logo from '../../../assets/images/Logo.png';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import SocialSignInButtons from '../../components/SocialSignInButtons';
 
 const SignInScreen = () => {
   const [username, setUsername] = useState<string>('');
@@ -12,31 +19,54 @@ const SignInScreen = () => {
   const {height} = useWindowDimensions();
 
   const onSignInPressed = () => {
-    console.log('Signing in...');
+    console.warn('Signing in...');
+  };
+
+  const onSignUpPressed = () => {
+    console.warn('Signing up...');
+  };
+
+  const onResetPasswordPressed = () => {
+    console.warn('Reset password');
   };
 
   return (
-    <View style={styles.root}>
-      <Image
-        source={Logo}
-        style={[styles.logo, {height: height * 0.3}]}
-        resizeMode="contain"
-      />
-      <Input
-        value={username}
-        setValue={setUsername}
-        placeholder="Username"
-        secureTextEntry={false}
-      />
-      <Input
-        value={password}
-        setValue={setPassword}
-        placeholder="Password"
-        secureTextEntry={true}
-      />
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.root}>
+        <Image
+          source={Logo}
+          style={[styles.logo, {height: height * 0.3}]}
+          resizeMode="contain"
+        />
+        <Input
+          value={username}
+          setValue={setUsername}
+          placeholder="Username"
+          secureTextEntry={false}
+        />
+        <Input
+          value={password}
+          setValue={setPassword}
+          placeholder="Password"
+          secureTextEntry={true}
+        />
 
-      <Button onPress={onSignInPressed} text="Sign in" />
-    </View>
+        <Button onPress={onSignInPressed} text="Sign in" />
+        <Button
+          onPress={onResetPasswordPressed}
+          text="Reset Password"
+          type="TERTIARY"
+        />
+
+        <SocialSignInButtons />
+
+        <Button
+          onPress={onSignUpPressed}
+          text="Don't have an account? Creat one!"
+          type="TERTIARY"
+        />
+      </View>
+    </ScrollView>
   );
 };
 
