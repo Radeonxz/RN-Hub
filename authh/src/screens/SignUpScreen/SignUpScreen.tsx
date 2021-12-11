@@ -15,6 +15,10 @@ const SignUpScreen = () => {
     console.warn('Signing up...');
   };
 
+  const onSignInPressed = () => {
+    console.warn('Signing in...');
+  };
+
   const onTermsOfUsePressed = () => {
     console.warn('Terms of use pressed...');
   };
@@ -68,7 +72,7 @@ const SignUpScreen = () => {
         <SocialSignInButtons />
 
         <Button
-          onPress={onSignUpPressed}
+          onPress={onSignInPressed}
           text="Already have an account? Sign in here!"
           type="TERTIARY"
         />
