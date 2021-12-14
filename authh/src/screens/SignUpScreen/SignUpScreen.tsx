@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {ScrollView, View, StyleSheet, Text} from 'react-native';
+import {useNavigation} from '@react-navigation/core';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -11,12 +12,16 @@ const SignUpScreen = () => {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
+  const navigation = useNavigation();
+
   const onSignUpPressed = () => {
     console.warn('Signing up...');
+    navigation.navigate('ConfirmEmail');
   };
 
   const onSignInPressed = () => {
     console.warn('Signing in...');
+    navigation.navigate('SignIn');
   };
 
   const onTermsOfUsePressed = () => {

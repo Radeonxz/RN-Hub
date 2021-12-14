@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {ScrollView, View, StyleSheet, Text} from 'react-native';
+import {useNavigation} from '@react-navigation/core';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -7,8 +8,11 @@ import Button from '../../components/Button';
 const ConfirmEmailScreen = () => {
   const [confirmationCode, setConfirmationCode] = useState<string>('');
 
+  const navigation = useNavigation();
+
   const onConfirmPressed = () => {
     console.warn('Confirming email...');
+    navigation.navigate('Home');
   };
 
   const onResendPressed = () => {
@@ -17,6 +21,7 @@ const ConfirmEmailScreen = () => {
 
   const onSignInPressed = () => {
     console.warn('Signing in...');
+    navigation.navigate('SignIn');
   };
 
   return (

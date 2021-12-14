@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {ScrollView, View, StyleSheet, Text} from 'react-native';
+import {useNavigation} from '@react-navigation/core';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -8,12 +9,16 @@ const NewPasswordScreen = () => {
   const [confirmationCode, setConfirmationCode] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
 
+  const navigation = useNavigation();
+
   const onSubmitPressed = () => {
     console.warn('Submitting new password...');
+    navigation.navigate('Home');
   };
 
   const onSignInPressed = () => {
     console.warn('Signing in...');
+    navigation.navigate('SignIn');
   };
 
   return (
