@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {ScrollView, View, StyleSheet, Text} from 'react-native';
+import {useNavigation} from '@react-navigation/core';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -7,12 +8,16 @@ import Button from '../../components/Button';
 const ResetPasswordScreen = () => {
   const [username, setUsername] = useState<string>('');
 
+  const navigation = useNavigation();
+
   const onSendPressed = () => {
     console.warn('Sending reset password email...');
+    navigation.navigate('NewPassword');
   };
 
   const onSignInPressed = () => {
     console.warn('Signing in...');
+    navigation.navigate('SignIn');
   };
 
   return (

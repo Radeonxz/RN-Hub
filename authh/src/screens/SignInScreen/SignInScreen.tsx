@@ -6,6 +6,7 @@ import {
   StyleSheet,
   useWindowDimensions,
 } from 'react-native';
+import {useNavigation} from '@react-navigation/core';
 
 import Logo from '../../../assets/images/Logo.png';
 import Input from '../../components/Input';
@@ -18,16 +19,21 @@ const SignInScreen = () => {
 
   const {height} = useWindowDimensions();
 
+  const navigation = useNavigation();
+
   const onSignInPressed = () => {
     console.warn('Signing in...');
+    navigation.navigate('Home');
   };
 
   const onSignUpPressed = () => {
     console.warn('Signing up...');
+    navigation.navigate('SignUp');
   };
 
   const onResetPasswordPressed = () => {
     console.warn('Reset password');
+    navigation.navigate('ResetPassword');
   };
 
   return (
