@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  bodyContainer: {
+  priceContainer: {
     padding: 15,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -24,6 +24,17 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 15,
     fontWeight: "500"
+  },
+  input: {
+    flex: 1,
+    width: 130,
+    height: 40,
+    margin: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "white",
+    color: "white",
+    padding: 10,
+    fontSize: 16
   }
 });
 

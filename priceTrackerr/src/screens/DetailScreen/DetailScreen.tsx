@@ -11,6 +11,7 @@ const DetailScreen = () => {
     image: { small },
     name,
     symbol,
+    prices,
     market_data: { market_cap_rank, current_price, price_change_percentage_24h }
   } = Coin;
 
@@ -23,7 +24,9 @@ const DetailScreen = () => {
       />
       <DetailBody
         name={name}
+        symbol={symbol}
         currentPrice={current_price}
+        prices={prices}
         priceChangePercentage={price_change_percentage_24h}
       />
     </View>
