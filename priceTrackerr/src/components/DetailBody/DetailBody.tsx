@@ -21,7 +21,8 @@ const DetailBody = ({
   const [coinValue, setCoinValue] = useState<string>("1");
   const [usdValue, setUSDValue] = useState<string>(currentPrice.usd.toString());
 
-  const percentageColor = priceChangePercentage < 0 ? "#ea3934" : "#16c784";
+  const percentageColor =
+    priceChangePercentage < 0 ? "#ea3934" : "#16c784" || "white";
   const chartColor = currentPrice.usd > prices[0][1] ? "#16c784" : "#ea3943";
 
   const screenWidth = Dimensions.get("window").width;
@@ -82,7 +83,7 @@ const DetailBody = ({
               style={{ alignSelf: "center", marginRight: 5 }}
             />
             <Text style={styles.priceChange}>
-              {priceChangePercentage.toFixed(2)}%
+              {priceChangePercentage?.toFixed(2)}%
             </Text>
           </View>
         </View>

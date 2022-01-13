@@ -19,7 +19,7 @@ const Item = ({ marketCoin }: ItemProps) => {
   } = marketCoin;
 
   const percentageColor =
-    price_change_percentage_24h < 0 ? "#ea3934" : "#16c784";
+    price_change_percentage_24h < 0 ? "#ea3934" : "#16c784" || "white";
 
   const formatMarketCap = (cap: number) => {
     if (cap > 1_000_000_000_000)
@@ -61,7 +61,7 @@ const Item = ({ marketCoin }: ItemProps) => {
             style={{ alignSelf: "center", marginRight: 5 }}
           />
           <Text style={{ color: percentageColor }}>
-            {price_change_percentage_24h.toFixed(2)}%
+            {price_change_percentage_24h?.toFixed(2)}%
           </Text>
         </View>
       </View>
