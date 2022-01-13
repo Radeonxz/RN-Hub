@@ -1,10 +1,14 @@
-import { Text, View, Image } from "react-native";
+import { Pressable, Text, View, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
+import { ItemProps } from "./Item.model";
 import styles from "./styles";
 
-const Item = ({ marketCoin }: any) => {
+const Item = ({ marketCoin }: ItemProps) => {
+  const navigation = useNavigation();
   const {
+    id,
     name,
     symbol,
     image,
@@ -27,7 +31,10 @@ const Item = ({ marketCoin }: any) => {
   };
 
   return (
-    <View style={styles.coinContainer}>
+    <Pressable
+      style={styles.coinContainer}
+      onPress={() => navigation.navigate("CoinDetailedScreen", { coinId: id })}
+    >
       <Image
         source={{
           uri: image
@@ -65,7 +72,7 @@ const Item = ({ marketCoin }: any) => {
           MCap {formatMarketCap(market_cap)}
         </Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

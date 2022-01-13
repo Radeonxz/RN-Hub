@@ -8,10 +8,16 @@ import {
 } from "@rainbow-me/animated-charts";
 import { AntDesign } from "@expo/vector-icons";
 
+import { DetailBodyProps } from "./DetailBody.model";
 import styles from "./styles";
 
-const DetailBody = (props: any) => {
-  const { name, symbol, currentPrice, prices, priceChangePercentage } = props;
+const DetailBody = ({
+  name,
+  symbol,
+  currentPrice,
+  prices,
+  priceChangePercentage
+}: DetailBodyProps) => {
   const [coinValue, setCoinValue] = useState<string>("1");
   const [usdValue, setUSDValue] = useState<string>(currentPrice.usd.toString());
 
