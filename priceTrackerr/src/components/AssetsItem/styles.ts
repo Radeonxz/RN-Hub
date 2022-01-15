@@ -8,7 +8,8 @@ const styles = StyleSheet.create({
   title: {
     color: "white",
     fontSize: 16,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    alignSelf: "flex-end"
   },
   ticker: {
     color: "grey",

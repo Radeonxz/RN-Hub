@@ -43,14 +43,13 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignItems: "center",
-    backgroundColor: "#4169E1",
+    // backgroundColor: "#4169E1",
     padding: 10,
     marginVertical: 30,
     marginHorizontal: 20,
     borderRadius: 5
   },
   buttonText: {
-    color: "white",
     fontWeight: "600",
     fontSize: 17
   }

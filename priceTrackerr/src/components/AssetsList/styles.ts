@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1
   },
   valueChange: {
-    color: "#16c784",
+    // color: "#16c784",
     fontWeight: "600",
     fontSize: 16
   },

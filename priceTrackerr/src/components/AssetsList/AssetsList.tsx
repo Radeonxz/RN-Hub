@@ -1,33 +1,88 @@
 import { View, Text, FlatList, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { AntDesign } from "@expo/vector-icons";
 
+import { allPortfolioAssets } from "../../atoms/PortfolioAssets";
 import AssetsItem from "../AssetsItem";
 import styles from "./styles";
 
 const AssetsList = () => {
   const navigation = useNavigation();
+  const [assets, setAssets] = useRecoilState(allPortfolioAssets);
+  const assetsValue = useRecoilValue(allPortfolioAssets);
+
+  const getCurrentBalance = () =>
+    parseFloat(
+      assetsValue.reduce(
+        (total: number, currentAsset: any) =>
+          total + currentAsset.currentPrice * currentAsset.quantity,
+        0
+      )
+    );
+
+  const getCurrentValueChange = () => {
+    const currentBalance = getCurrentBalance();
+    const boughtBalance = assetsValue.reduce(
+      (total: number, currentAsset: any) =>
+        total + currentAsset.priceBought * currentAsset.quantity,
+      0
+    );
+
+    return parseFloat((currentBalance - boughtBalance).toFixed(2));
+  };
+
+  const getCurrentPercentageChange = () => {
+    const currentBalance = getCurrentValueChange();
+    const boughtBalance = assetsValue.reduce(
+      (total: number, currentAsset: any) =>
+        total + currentAsset.priceBought * currentAsset.quantity,
+      0
+    );
+
+    return (
+      (((currentBalance - boughtBalance) / boughtBalance) * 100).toFixed(2) || 0
+    );
+  };
+
+  const isChangePositive = () => getCurrentValueChange() >= 0;
 
   return (
     <View>
       <FlatList
-        data={[{ id: "bitcoin" }]}
+        data={assetsValue}
         ListHeaderComponent={
           <>
             <View style={styles.balanceContainer}>
               <View>
                 <Text style={styles.currentBalance}>Current Balance</Text>
-                <Text style={styles.currentBalanceValue}>$30000</Text>
-                <Text style={styles.valueChange}>$1000 (All Time)</Text>
+                <Text style={styles.currentBalanceValue}>
+                  ${getCurrentBalance()}
+                </Text>
+                <Text
+                  style={{
+                    ...styles.valueChange,
+                    color: isChangePositive() ? "#16c784" : "#ea3934"
+                  }}
+                >
+                  ${getCurrentValueChange()} (All Time)
+                </Text>
               </View>
-              <View style={styles.priceChangePercentageContainer}>
+              <View
+                style={{
+                  ...styles.priceChangePercentageContainer,
+                  backgroundColor: isChangePositive() ? "#16c784" : "#ea3934"
+                }}
+              >
                 <AntDesign
-                  name={false ? "caretdown" : "caretup"}
+                  name={isChangePositive() ? "caretup" : "caretdown"}
                   size={12}
                   color={"white"}
                   style={{ alignSelf: "center", marginRight: 5 }}
                 />
-                <Text style={styles.percentageChange}>1.2%</Text>
+                <Text style={styles.percentageChange}>
+                  {getCurrentPercentageChange()}%
+                </Text>
               </View>
             </View>
             <Text style={styles.assetsLabel}>Your Assets</Text>

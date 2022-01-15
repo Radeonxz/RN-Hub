@@ -33,7 +33,7 @@ export const getMarketData = async (pageNumber = 1) => {
   }
 };
 
-export const getWatchlistCoins = async (pageNumber = 1, coinIds: string[]) => {
+export const getWatchlistCoins = async (pageNumber = 1, coinIds: string) => {
   try {
     const response = await axios.get(
       `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coinIds}&order=market_cap_desc&per_page=50&page=${pageNumber}&sparkline=false&price_change_percentage=24h`
@@ -41,5 +41,16 @@ export const getWatchlistCoins = async (pageNumber = 1, coinIds: string[]) => {
     return response.data;
   } catch (error) {
     console.warn(error);
+  }
+};
+
+export const getAllCoins = async () => {
+  try {
+    const response = await axios.get(
+      `https://api.coingecko.com/api/v3/coins/list?include_platform=false`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
   }
 };
