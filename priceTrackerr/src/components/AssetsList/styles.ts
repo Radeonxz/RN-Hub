@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
   currentBalance: {
     color: "white",
     fontWeight: "600",
-    fontSize: 15
+    fontSize: 15,
+    fontFamily: "Inter_900Black"
   },
   currentBalanceValue: {
     color: "white",
@@ -29,12 +30,12 @@ const styles = StyleSheet.create({
   },
   valueChange: {
     // color: "#16c784",
-    fontWeight: "600",
+    fontWeight: "700",
     fontSize: 16
   },
   percentageChange: {
     color: "white",
-    fontWeight: "700",
+    fontWeight: "600",
     fontSize: 17
   },
   assetsLabel: {

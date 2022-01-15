@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FlatList, RefreshControl } from "react-native";
+import { View, Text, FlatList, RefreshControl } from "react-native";
 
 import Item from "../../components/Item";
 import { getMarketData } from "../../services/requests";
@@ -29,18 +29,32 @@ const HomeScreen = () => {
   }, []);
 
   return (
-    <FlatList
-      data={coins}
-      renderItem={({ item }) => <Item marketCoin={item} />}
-      onEndReached={() => fetchCoins(coins.length / 50 + 1)}
-      refreshControl={
-        <RefreshControl
-          refreshing={isLoading}
-          tintColor="white"
-          onRefresh={refetchCoins}
-        />
-      }
-    />
+    <View>
+      <Text
+        style={{
+          fontFamily: "Droidsans",
+          color: "white",
+          fontSize: 25,
+          letterSpacing: 1,
+          paddingHorizontal: 20,
+          paddingBottom: 8
+        }}
+      >
+        Cryptoassets
+      </Text>
+      <FlatList
+        data={coins}
+        renderItem={({ item }) => <Item marketCoin={item} />}
+        onEndReached={() => fetchCoins(coins.length / 50 + 1)}
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            tintColor="white"
+            onRefresh={refetchCoins}
+          />
+        }
+      />
+    </View>
   );
 };
 

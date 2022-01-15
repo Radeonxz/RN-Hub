@@ -4,15 +4,8 @@ import { AntDesign } from "@expo/vector-icons";
 import styles from "./styles";
 
 const AssetsItem = ({ assetItem }) => {
-  const {
-    name,
-    ticker,
-    image,
-    currentPrice,
-    priceBought,
-    quantity,
-    priceChangePercentage
-  } = assetItem;
+  const { name, ticker, image, currentPrice, quantity, priceChangePercentage } =
+    assetItem;
 
   const isChangePositive = () => priceChangePercentage >= 0;
 
@@ -28,7 +21,7 @@ const AssetsItem = ({ assetItem }) => {
         <Text style={styles.title}>{name}</Text>
         <Text style={styles.ticker}>{ticker}</Text>
       </View>
-      <View style={{ marginLeft: "auto" }}>
+      <View style={{ marginLeft: "auto", alignItems: "flex-end" }}>
         <Text style={styles.title}>${currentPrice}</Text>
         <View style={{ flexDirection: "row" }}>
           <AntDesign

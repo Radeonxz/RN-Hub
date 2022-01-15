@@ -22,10 +22,10 @@ const Item = ({ marketCoin }: ItemProps) => {
     price_change_percentage_24h < 0 ? "#ea3934" : "#16c784" || "white";
 
   const formatMarketCap = (cap: number) => {
-    if (cap > 1e12) return `${Math.floor(cap / 1e12)}T`;
-    if (cap > 1e9) return `${Math.floor(cap / 1e9)}B`;
-    if (cap > 1e6) return `${Math.floor(cap / 1e6)}M`;
-    if (cap > 1e3) return `${Math.floor(cap / 1e3)}K`;
+    if (cap > 1e12) return `${(cap / 1e12).toFixed(3)} T`;
+    if (cap > 1e9) return `${(cap / 1e9).toFixed(3)} B`;
+    if (cap > 1e6) return `${(cap / 1e6).toFixed(3)} M`;
+    if (cap > 1e3) return `${(cap / 1e3).toFixed(3)} K`;
     return cap;
   };
 

@@ -23,7 +23,8 @@ export const selectAllPortfolioAssetsInStorage = selector({
     const mergedAssets = savedPortfolioAssets.map((asset: any) => {
       const portfolioAsset = assetsMarketData.filter(
         (assetData: any) => assetData.id === asset.id
-      );
+      )[0];
+
       return {
         ...asset,
         currentPrice: portfolioAsset.current_price,

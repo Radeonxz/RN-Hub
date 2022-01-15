@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   },
   ticker: {
     color: "grey",
-    fontWeight: "bold"
+    fontWeight: "700"
   },
   quantityContainer: {
     marginLeft: "auto",

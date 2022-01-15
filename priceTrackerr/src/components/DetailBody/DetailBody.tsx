@@ -46,9 +46,10 @@ const DetailBody = ({
   const formatCurrency = (value: string) => {
     "worklet";
     if (value === "") {
+      if (currentPrice.usd < 1) return `$${currentPrice.usd}`;
       return `$${currentPrice.usd.toFixed(2)}`;
     }
-
+    if (currentPrice.usd < 1) return `$${parseFloat(value)}`;
     return `$${parseFloat(value).toFixed(2)}`;
   };
 

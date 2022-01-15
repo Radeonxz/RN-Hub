@@ -13,12 +13,10 @@ const AssetsList = () => {
   const assetsValue = useRecoilValue(allPortfolioAssets);
 
   const getCurrentBalance = () =>
-    parseFloat(
-      assetsValue.reduce(
-        (total: number, currentAsset: any) =>
-          total + currentAsset.currentPrice * currentAsset.quantity,
-        0
-      )
+    assetsValue.reduce(
+      (total: number, currentAsset: any) =>
+        total + currentAsset.currentPrice * currentAsset.quantity,
+      0
     );
 
   const getCurrentValueChange = () => {
@@ -29,7 +27,7 @@ const AssetsList = () => {
       0
     );
 
-    return parseFloat((currentBalance - boughtBalance).toFixed(2));
+    return (currentBalance - boughtBalance).toFixed(2);
   };
 
   const getCurrentPercentageChange = () => {
@@ -41,64 +39,65 @@ const AssetsList = () => {
     );
 
     return (
-      (((currentBalance - boughtBalance) / boughtBalance) * 100).toFixed(2) || 0
+      (
+        ((parseFloat(currentBalance) - boughtBalance) / boughtBalance) *
+        100
+      ).toFixed(2) || 0
     );
   };
 
-  const isChangePositive = () => getCurrentValueChange() >= 0;
+  const isChangePositive = () => parseFloat(getCurrentValueChange()) >= 0;
 
   return (
-    <View>
-      <FlatList
-        data={assetsValue}
-        ListHeaderComponent={
-          <>
-            <View style={styles.balanceContainer}>
-              <View>
-                <Text style={styles.currentBalance}>Current Balance</Text>
-                <Text style={styles.currentBalanceValue}>
-                  ${getCurrentBalance()}
-                </Text>
-                <Text
-                  style={{
-                    ...styles.valueChange,
-                    color: isChangePositive() ? "#16c784" : "#ea3934"
-                  }}
-                >
-                  ${getCurrentValueChange()} (All Time)
-                </Text>
-              </View>
-              <View
+    <FlatList
+      data={assetsValue}
+      ListHeaderComponent={
+        <>
+          <View style={styles.balanceContainer}>
+            <View>
+              <Text style={styles.currentBalance}>Current Balance</Text>
+              <Text style={styles.currentBalanceValue}>
+                ${getCurrentBalance().toFixed(2)}
+              </Text>
+              <Text
                 style={{
-                  ...styles.priceChangePercentageContainer,
-                  backgroundColor: isChangePositive() ? "#16c784" : "#ea3934"
+                  ...styles.valueChange,
+                  color: isChangePositive() ? "#16c784" : "#ea3934"
                 }}
               >
-                <AntDesign
-                  name={isChangePositive() ? "caretup" : "caretdown"}
-                  size={12}
-                  color={"white"}
-                  style={{ alignSelf: "center", marginRight: 5 }}
-                />
-                <Text style={styles.percentageChange}>
-                  {getCurrentPercentageChange()}%
-                </Text>
-              </View>
+                ${getCurrentValueChange()} (All Time)
+              </Text>
             </View>
-            <Text style={styles.assetsLabel}>Your Assets</Text>
-          </>
-        }
-        renderItem={({ item }) => <AssetsItem assetItem={item} />}
-        ListFooterComponent={
-          <Pressable
-            style={styles.buttonContainer}
-            onPress={() => navigation.navigate("NewAssetsScreen")}
-          >
-            <Text style={styles.buttonText}>Add New Asset</Text>
-          </Pressable>
-        }
-      />
-    </View>
+            <View
+              style={{
+                ...styles.priceChangePercentageContainer,
+                backgroundColor: isChangePositive() ? "#16c784" : "#ea3934"
+              }}
+            >
+              <AntDesign
+                name={isChangePositive() ? "caretup" : "caretdown"}
+                size={12}
+                color={"white"}
+                style={{ alignSelf: "center", marginRight: 5 }}
+              />
+              <Text style={styles.percentageChange}>
+                {getCurrentPercentageChange()}%
+              </Text>
+            </View>
+          </View>
+          <Text style={styles.assetsLabel}>Your Assets</Text>
+        </>
+      }
+      renderItem={({ item }) => <AssetsItem assetItem={item} />}
+      ListFooterComponent={
+        <Pressable
+          style={styles.buttonContainer}
+          onPress={() => navigation.navigate("NewAssetsScreen")}
+        >
+          <Text style={styles.buttonText}>Add New Asset</Text>
+        </Pressable>
+      }
+    />
   );
 };
 
