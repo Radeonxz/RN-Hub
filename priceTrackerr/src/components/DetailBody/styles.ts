@@ -1,6 +1,14 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+  filtersContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    backgroundColor: "#2b2b2b",
+    paddingVertical: 5,
+    borderRadius: 5,
+    marginVertical: 10
+  },
   priceContainer: {
     padding: 15,
     flexDirection: "row",

@@ -1,9 +1,10 @@
-import { View, Text, Image, Pressable } from "react-native";
+import { View, Text, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
+import { AssetsItemProps } from "./AssetsItem.model";
 import styles from "./styles";
 
-const AssetsItem = ({ assetItem }) => {
+const AssetsItem = ({ assetItem }: AssetsItemProps) => {
   const { name, ticker, image, currentPrice, quantity, priceChangePercentage } =
     assetItem;
 

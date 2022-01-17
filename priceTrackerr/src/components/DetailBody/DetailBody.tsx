@@ -10,6 +10,7 @@ import { AntDesign } from "@expo/vector-icons";
 
 import { DetailBodyProps } from "./DetailBody.model";
 import styles from "./styles";
+import Filter from "../Filter";
 
 const DetailBody = ({
   name,
@@ -20,6 +21,7 @@ const DetailBody = ({
 }: DetailBodyProps) => {
   const [coinValue, setCoinValue] = useState<string>("1");
   const [usdValue, setUSDValue] = useState<string>(currentPrice.usd.toString());
+  const [selectedRange, setSelectedRange] = useState("1");
 
   const percentageColor =
     priceChangePercentage < 0 ? "#ea3934" : "#16c784" || "white";
@@ -53,8 +55,44 @@ const DetailBody = ({
     return `$${parseFloat(value).toFixed(2)}`;
   };
 
+  const onSelectedRangeChange = (selectedRangeValue: string) => {
+    setSelectedRange(selectedRangeValue);
+  };
+
   return (
     <View>
+      <View style={styles.filtersContainer}>
+        <Filter
+          filterDay="1"
+          filterText="24h"
+          selectedRange={selectedRange}
+          setSelectedRangeChange={onSelectedRangeChange}
+        />
+        <Filter
+          filterDay="7"
+          filterText="7d"
+          selectedRange={selectedRange}
+          setSelectedRangeChange={onSelectedRangeChange}
+        />
+        <Filter
+          filterDay="30"
+          filterText="30d"
+          selectedRange={selectedRange}
+          setSelectedRangeChange={onSelectedRangeChange}
+        />
+        <Filter
+          filterDay="365"
+          filterText="365d"
+          selectedRange={selectedRange}
+          setSelectedRangeChange={onSelectedRangeChange}
+        />
+        <Filter
+          filterDay="max"
+          filterText="all"
+          selectedRange={selectedRange}
+          setSelectedRangeChange={onSelectedRangeChange}
+        />
+      </View>
       <ChartPathProvider
         data={{
           points: prices.map((price: [number, number]) => ({
