@@ -8,17 +8,43 @@ import {
 } from "@rainbow-me/animated-charts";
 import { AntDesign } from "@expo/vector-icons";
 
+import { DetailBodyProps } from "./DetailBody.model";
 import styles from "./styles";
+import Filter from "../Filter";
+import { getCoinMarketChart } from "../../services/requests";
 
-const DetailBody = (props: any) => {
-  const { name, symbol, currentPrice, prices, priceChangePercentage } = props;
+const filterDaysArray = [
+  { filterDay: "1", filterText: "24h" },
+  { filterDay: "7", filterText: "7d" },
+  { filterDay: "30", filterText: "30d" },
+  { filterDay: "365", filterText: "1y" },
+  { filterDay: "max", filterText: "all" }
+];
+
+const DetailBody = ({
+  coinId,
+  name,
+  symbol,
+  currentPrice,
+  prices,
+  priceChangePercentage
+}: DetailBodyProps) => {
   const [coinValue, setCoinValue] = useState<string>("1");
   const [usdValue, setUSDValue] = useState<string>(currentPrice.usd.toString());
+  const [selectedRange, setSelectedRange] = useState("1");
+  const [pricesDetail, setPricesDetail] = useState(prices);
 
-  const percentageColor = priceChangePercentage < 0 ? "#ea3934" : "#16c784";
-  const chartColor = currentPrice.usd > prices[0][1] ? "#16c784" : "#ea3943";
+  const percentageColor =
+    priceChangePercentage < 0 ? "#ea3934" : "#16c784" || "white";
+  const chartColor =
+    currentPrice.usd > pricesDetail[0][1] ? "#16c784" : "#ea3943";
 
   const screenWidth = Dimensions.get("window").width;
+
+  const fetchCoinMarketData = async (selectedRangeValue: string) => {
+    const coinMarketData = await getCoinMarketChart(coinId, selectedRangeValue);
+    setPricesDetail(coinMarketData?.prices);
+  };
 
   useEffect(() => {
     setUSDValue(
@@ -39,22 +65,28 @@ const DetailBody = (props: any) => {
   const formatCurrency = (value: string) => {
     "worklet";
     if (value === "") {
+      if (currentPrice.usd < 1) return `$${currentPrice.usd}`;
       return `$${currentPrice.usd.toFixed(2)}`;
     }
-
+    if (currentPrice.usd < 1) return `$${parseFloat(value)}`;
     return `$${parseFloat(value).toFixed(2)}`;
+  };
+
+  const onSelectedRangeChange = (selectedRangeValue: string) => {
+    setSelectedRange(selectedRangeValue);
+    fetchCoinMarketData(selectedRangeValue);
   };
 
   return (
     <View>
       <ChartPathProvider
         data={{
-          points: prices.map((price: [number, number]) => ({
+          points: pricesDetail.map((price: [number, number]) => ({
             x: price[0],
             y: price[1]
-          })),
+          }))
           // points: prices.map(([x, y]: [number, number]) => ({ x, y })),
-          smoothingStrategy: "bezier"
+          // smoothingStrategy: "bezier" // improve performance
         }}
       >
         <View style={styles.priceContainer}>
@@ -76,9 +108,20 @@ const DetailBody = (props: any) => {
               style={{ alignSelf: "center", marginRight: 5 }}
             />
             <Text style={styles.priceChange}>
-              {priceChangePercentage.toFixed(2)}%
+              {priceChangePercentage?.toFixed(2)}%
             </Text>
           </View>
+        </View>
+        <View style={styles.filtersContainer}>
+          {filterDaysArray.map((item) => (
+            <Filter
+              key={item.filterText}
+              filterDay={item.filterDay}
+              filterText={item.filterText}
+              selectedRange={selectedRange}
+              setSelectedRangeChange={onSelectedRangeChange}
+            />
+          ))}
         </View>
         <View>
           <ChartPath

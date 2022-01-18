@@ -1,10 +1,14 @@
-import { Text, View, Image } from "react-native";
+import { Pressable, Text, View, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
+import { ItemProps } from "./Item.model";
 import styles from "./styles";
 
-const Item = ({ marketCoin }: any) => {
+const Item = ({ marketCoin }: ItemProps) => {
+  const navigation = useNavigation();
   const {
+    id,
     name,
     symbol,
     image,
@@ -15,19 +19,21 @@ const Item = ({ marketCoin }: any) => {
   } = marketCoin;
 
   const percentageColor =
-    price_change_percentage_24h < 0 ? "#ea3934" : "#16c784";
+    price_change_percentage_24h < 0 ? "#ea3934" : "#16c784" || "white";
 
   const formatMarketCap = (cap: number) => {
-    if (cap > 1_000_000_000_000)
-      return `${Math.floor(cap / 1_000_000_000_000)}T`;
-    if (cap > 1_000_000_000) return `${Math.floor(cap / 1_000_000_000)}B`;
-    if (cap > 1_000_000) return `${Math.floor(cap / 1_000_000)}M`;
-    if (cap > 1_000) return `${Math.floor(cap / 1_000)}K`;
+    if (cap > 1e12) return `${(cap / 1e12).toFixed(3)} T`;
+    if (cap > 1e9) return `${(cap / 1e9).toFixed(3)} B`;
+    if (cap > 1e6) return `${(cap / 1e6).toFixed(3)} M`;
+    if (cap > 1e3) return `${(cap / 1e3).toFixed(3)} K`;
     return cap;
   };
 
   return (
-    <View style={styles.coinContainer}>
+    <Pressable
+      style={styles.coinContainer}
+      onPress={() => navigation.navigate("CoinDetailedScreen", { coinId: id })}
+    >
       <Image
         source={{
           uri: image
@@ -54,7 +60,7 @@ const Item = ({ marketCoin }: any) => {
             style={{ alignSelf: "center", marginRight: 5 }}
           />
           <Text style={{ color: percentageColor }}>
-            {price_change_percentage_24h.toFixed(2)}%
+            {price_change_percentage_24h?.toFixed(2)}%
           </Text>
         </View>
       </View>
@@ -65,7 +71,7 @@ const Item = ({ marketCoin }: any) => {
           MCap {formatMarketCap(market_cap)}
         </Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
