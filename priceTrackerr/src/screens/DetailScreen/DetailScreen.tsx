@@ -22,7 +22,7 @@ const DetailScreen = () => {
   const fetchCoinData = async () => {
     setIsLoading(true);
     const fetchedCoinData = await getDetailedCoinData(coinId);
-    const fetchedCoinMarketData = await getCoinMarketChart(coinId);
+    const fetchedCoinMarketData = await getCoinMarketChart(coinId, "1");
     setCoin(fetchedCoinData);
     setCoinMarketData(fetchedCoinMarketData);
     setIsLoading(false);
@@ -54,6 +54,7 @@ const DetailScreen = () => {
         marketCapRank={market_cap_rank}
       />
       <DetailBody
+        coinId={id}
         name={name}
         symbol={symbol}
         currentPrice={current_price}

@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useRecoilState } from "recoil";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import SearchableDropdown from "react-native-searchable-dropdown";
+import uuid from "react-native-uuid";
 
 import { allPortfolioAssetsInStorage } from "../../atoms/PortfolioAssets";
 import { getAllCoins, getDetailedCoinData } from "../../services/requests";
@@ -26,6 +27,7 @@ const NewAssetsScreen = () => {
   const onAddNewAsset = async () => {
     const newAsset = {
       id: selectedCoin?.id,
+      unique_id: uuid.v4(),
       name: selectedCoin?.name,
       image: selectedCoin?.image?.small,
       ticker: selectedCoin?.symbol?.toUpperCase(),

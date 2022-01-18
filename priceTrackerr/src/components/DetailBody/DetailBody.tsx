@@ -11,8 +11,18 @@ import { AntDesign } from "@expo/vector-icons";
 import { DetailBodyProps } from "./DetailBody.model";
 import styles from "./styles";
 import Filter from "../Filter";
+import { getCoinMarketChart } from "../../services/requests";
+
+const filterDaysArray = [
+  { filterDay: "1", filterText: "24h" },
+  { filterDay: "7", filterText: "7d" },
+  { filterDay: "30", filterText: "30d" },
+  { filterDay: "365", filterText: "1y" },
+  { filterDay: "max", filterText: "all" }
+];
 
 const DetailBody = ({
+  coinId,
   name,
   symbol,
   currentPrice,
@@ -22,12 +32,19 @@ const DetailBody = ({
   const [coinValue, setCoinValue] = useState<string>("1");
   const [usdValue, setUSDValue] = useState<string>(currentPrice.usd.toString());
   const [selectedRange, setSelectedRange] = useState("1");
+  const [pricesDetail, setPricesDetail] = useState(prices);
 
   const percentageColor =
     priceChangePercentage < 0 ? "#ea3934" : "#16c784" || "white";
-  const chartColor = currentPrice.usd > prices[0][1] ? "#16c784" : "#ea3943";
+  const chartColor =
+    currentPrice.usd > pricesDetail[0][1] ? "#16c784" : "#ea3943";
 
   const screenWidth = Dimensions.get("window").width;
+
+  const fetchCoinMarketData = async (selectedRangeValue: string) => {
+    const coinMarketData = await getCoinMarketChart(coinId, selectedRangeValue);
+    setPricesDetail(coinMarketData?.prices);
+  };
 
   useEffect(() => {
     setUSDValue(
@@ -57,50 +74,19 @@ const DetailBody = ({
 
   const onSelectedRangeChange = (selectedRangeValue: string) => {
     setSelectedRange(selectedRangeValue);
+    fetchCoinMarketData(selectedRangeValue);
   };
 
   return (
     <View>
-      <View style={styles.filtersContainer}>
-        <Filter
-          filterDay="1"
-          filterText="24h"
-          selectedRange={selectedRange}
-          setSelectedRangeChange={onSelectedRangeChange}
-        />
-        <Filter
-          filterDay="7"
-          filterText="7d"
-          selectedRange={selectedRange}
-          setSelectedRangeChange={onSelectedRangeChange}
-        />
-        <Filter
-          filterDay="30"
-          filterText="30d"
-          selectedRange={selectedRange}
-          setSelectedRangeChange={onSelectedRangeChange}
-        />
-        <Filter
-          filterDay="365"
-          filterText="365d"
-          selectedRange={selectedRange}
-          setSelectedRangeChange={onSelectedRangeChange}
-        />
-        <Filter
-          filterDay="max"
-          filterText="all"
-          selectedRange={selectedRange}
-          setSelectedRangeChange={onSelectedRangeChange}
-        />
-      </View>
       <ChartPathProvider
         data={{
-          points: prices.map((price: [number, number]) => ({
+          points: pricesDetail.map((price: [number, number]) => ({
             x: price[0],
             y: price[1]
-          })),
+          }))
           // points: prices.map(([x, y]: [number, number]) => ({ x, y })),
-          smoothingStrategy: "bezier"
+          // smoothingStrategy: "bezier" // improve performance
         }}
       >
         <View style={styles.priceContainer}>
@@ -125,6 +111,17 @@ const DetailBody = ({
               {priceChangePercentage?.toFixed(2)}%
             </Text>
           </View>
+        </View>
+        <View style={styles.filtersContainer}>
+          {filterDaysArray.map((item) => (
+            <Filter
+              key={item.filterText}
+              filterDay={item.filterDay}
+              filterText={item.filterText}
+              selectedRange={selectedRange}
+              setSelectedRangeChange={onSelectedRangeChange}
+            />
+          ))}
         </View>
         <View>
           <ChartPath

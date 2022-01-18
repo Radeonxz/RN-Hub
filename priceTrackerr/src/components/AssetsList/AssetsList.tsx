@@ -1,9 +1,14 @@
 import { View, Text, FlatList, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { SwipeListView } from "react-native-swipe-list-view";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { AntDesign } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
 
-import { allPortfolioAssets } from "../../atoms/PortfolioAssets";
+import {
+  allPortfolioAssets,
+  allPortfolioAssetsInStorage
+} from "../../atoms/PortfolioAssets";
 import AssetsItem from "../AssetsItem";
 import styles from "./styles";
 
@@ -11,6 +16,9 @@ const AssetsList = () => {
   const navigation = useNavigation();
   const [assets, setAssets] = useRecoilState(allPortfolioAssets);
   const assetsValue = useRecoilValue(allPortfolioAssets);
+  const [storageAssets, setStorageAssets] = useRecoilState(
+    allPortfolioAssetsInStorage
+  );
 
   const getCurrentBalance = () =>
     assetsValue.reduce(
@@ -31,26 +39,57 @@ const AssetsList = () => {
   };
 
   const getCurrentPercentageChange = () => {
-    const currentBalance = getCurrentValueChange();
+    const currentBalance = getCurrentBalance();
     const boughtBalance = assetsValue.reduce(
       (total: number, currentAsset: any) =>
         total + currentAsset.priceBought * currentAsset.quantity,
       0
     );
 
-    return (
-      (
-        ((parseFloat(currentBalance) - boughtBalance) / boughtBalance) *
-        100
-      ).toFixed(2) || 0
-    );
+    const changeRate = (
+      ((currentBalance - boughtBalance) / boughtBalance) *
+      100
+    ).toFixed(2);
+
+    return isNaN(changeRate) ? 0 : changeRate;
   };
 
   const isChangePositive = () => parseFloat(getCurrentValueChange()) >= 0;
 
+  const onDeleteAsset = async (asset: any) => {
+    const newAssets = storageAssets.filter(
+      (coin) => coin.unique_id !== asset.item.unique_id
+    );
+    const jsonValue = JSON.stringify(newAssets);
+    await AsyncStorage.setItem("@assets_coins", jsonValue);
+    setStorageAssets(newAssets);
+  };
+
+  const renderDeleteButton = (data: any) => {
+    return (
+      <Pressable
+        style={{
+          flex: 1,
+          backgroundColor: "#ea3934",
+          alignItems: "flex-end",
+          justifyContent: "center",
+          paddingRight: 30,
+          marginLeft: 20
+        }}
+        onPress={() => onDeleteAsset(data)}
+      >
+        <FontAwesome name="trash-o" size={24} color="white" />
+      </Pressable>
+    );
+  };
+
   return (
-    <FlatList
+    <SwipeListView
       data={assetsValue}
+      rightOpenValue={-75}
+      disableRightSwipe
+      renderHiddenItem={(data) => renderDeleteButton(data)}
+      keyExtractor={({ id }, index) => `${id}${index}`}
       ListHeaderComponent={
         <>
           <View style={styles.balanceContainer}>
@@ -81,7 +120,7 @@ const AssetsList = () => {
                 style={{ alignSelf: "center", marginRight: 5 }}
               />
               <Text style={styles.percentageChange}>
-                {getCurrentPercentageChange()}%
+                {getCurrentPercentageChange() || 0}%
               </Text>
             </View>
           </View>

@@ -1,4 +1,5 @@
-import { View, Text, Pressable } from "react-native";
+import { memo } from "react";
+import { Text, Pressable } from "react-native";
 
 const Filter = ({
   filterDay,
@@ -26,4 +27,4 @@ const Filter = ({
   );
 };
 
-export default Filter;
+export default memo(Filter);
