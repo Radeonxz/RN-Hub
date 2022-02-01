@@ -1,9 +1,10 @@
 import { Image } from "react-native";
 
 import { Text, View } from "../Themed";
-import { styles } from "./styles";
+import styles from "./styles";
 
-export default function ChatRoomItem() {
+export default function ChatRoomItem({ chatRoom }: any) {
+  const { users, lastMessage, newMessages } = chatRoom;
   return (
     <View style={styles.container}>
       {/* <Text style={styles.title}>Tab One</Text>
@@ -15,21 +16,22 @@ export default function ChatRoomItem() {
       <EditScreenInfo path="/screens/TabOneScreen.tsx" /> */}
       <Image
         source={{
-          uri: "https://randomuser.me/api/portraits/lego/2.jpg"
+          uri: users[1].imageUri
         }}
         style={styles.image}
       />
-      <View style={styles.badgeContainer}>
-        <Text style={styles.badgeText}>4</Text>
-      </View>
+      {newMessages && (
+        <View style={styles.badgeContainer}>
+          <Text style={styles.badgeText}>{newMessages}</Text>
+        </View>
+      )}
       <View style={styles.rightContainer}>
         <View style={styles.row}>
-          <Text style={styles.name}>Bar</Text>
-          <Text style={styles.text}>10:11 AM</Text>
+          <Text style={styles.name}>{users[1].name}</Text>
+          <Text style={styles.text}>{lastMessage.createdAt}</Text>
         </View>
         <Text numberOfLines={1} ellipsizeMode="tail" style={styles.text}>
-          Message details...Message details...Message details...Message
-          details...Message details...Message details...
+          {lastMessage.content}
         </Text>
       </View>
     </View>
