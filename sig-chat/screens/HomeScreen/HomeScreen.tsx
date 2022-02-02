@@ -1,9 +1,9 @@
 import { StyleSheet, FlatList } from "react-native";
 
-import { Text, View } from "../components/Themed";
-import { RootTabScreenProps } from "../types";
-import ChatRoomItem from "../components/ChatRoomItem";
-import chatRoomData from "../assets/data/ChatRooms";
+import { Text, View } from "../../components/Themed";
+import { RootTabScreenProps } from "../../types";
+import ChatRoomItem from "../../components/ChatRoomItem";
+import chatRoomData from "../../assets/data/ChatRooms";
 
 export default function TabOneScreen({
   navigation
@@ -12,9 +12,10 @@ export default function TabOneScreen({
     <View style={styles.page}>
       <FlatList
         data={chatRoomData}
-        renderItem={({ chatRoomItem }: any) => (
+        renderItem={({ item: chatRoomItem }) => (
           <ChatRoomItem chatRoom={chatRoomItem} />
         )}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );

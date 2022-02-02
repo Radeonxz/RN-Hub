@@ -3,8 +3,9 @@ import { Image } from "react-native";
 import { Text, View } from "../Themed";
 import styles from "./styles";
 
-export default function ChatRoomItem({ chatRoom }: any) {
-  const { users, lastMessage, newMessages } = chatRoom;
+export default function ChatRoomItem({
+  chatRoom: { users, lastMessage, newMessages }
+}: any) {
   return (
     <View style={styles.container}>
       {/* <Text style={styles.title}>Tab One</Text>
