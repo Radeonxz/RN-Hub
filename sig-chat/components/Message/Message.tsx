@@ -1,19 +1,21 @@
 import { Text, View } from "../Themed";
 import styles from "./styles";
 
-export default function Message() {
-  const isMe = true;
-  const blue = "#3777f0";
-  const grey = "lightgrey";
+const blue = "#3777f0";
+const grey = "lightgrey";
+const myID = "u1";
+
+export default function Message({ message }: any) {
+  const isMe = message.user.id === myID;
 
   return (
     <View
       style={[
         styles.container,
-        { backgroundColor: isMe ? grey : blue, marginLeft: isMe ? "auto" : 10 }
+        isMe ? styles.rightContainer : styles.leftContainer
       ]}
     >
-      <Text style={{ color: isMe ? "black" : "white" }}>Message</Text>
+      <Text style={{ color: isMe ? "black" : "white" }}>{message.content}</Text>
     </View>
   );
 }
