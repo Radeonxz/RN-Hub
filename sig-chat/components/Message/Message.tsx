@@ -3,7 +3,7 @@ import styles from "./styles";
 
 const blue = "#3777f0";
 const grey = "lightgrey";
-const myID = "u1";
+const myID = "u2";
 
 export default function Message({ message }: any) {
   const isMe = message.user.id === myID;
