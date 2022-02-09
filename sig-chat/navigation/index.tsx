@@ -12,8 +12,17 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable } from "react-native";
+import {
+  ColorSchemeName,
+  Pressable,
+  View,
+  Image,
+  Text,
+  useWindowDimensions
+} from "react-native";
+import { Feather } from "@expo/vector-icons";
 
+// import { View, Text } from "../components/Themed";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
@@ -52,16 +61,28 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="ChatRoom"
-        component={ChatRoomScreen}
-        options={{ headerShown: true }}
-      />
-
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Root"
         component={BottomTabNavigator}
         options={{ headerShown: false }}
+      /> */}
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerShown: true,
+          headerTitle: (props) => <HomeHeader {...props} />
+        }}
+      />
+
+      <Stack.Screen
+        name="ChatRoom"
+        component={ChatRoomScreen}
+        options={{
+          headerShown: true,
+          headerBackTitleVisible: false,
+          headerTitle: (props) => <ChatRoomHeader {...props} />
+        }}
       />
 
       <Stack.Screen
@@ -75,6 +96,93 @@ function RootNavigator() {
     </Stack.Navigator>
   );
 }
+
+const HomeHeader = (props) => {
+  const { width } = useWindowDimensions();
+
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        justifyContent: "space-between",
+        width,
+        marginLeft: -12,
+        padding: 10,
+        alignItems: "center"
+      }}
+    >
+      <Image
+        source={{ uri: "https://randomuser.me/api/portraits/lego/1.jpg" }}
+        style={{ width: 30, height: 30, borderRadius: 30 }}
+      />
+      <Text
+        style={{
+          flex: 1,
+          textAlign: "center",
+          marginLeft: 50,
+          fontWeight: "bold"
+        }}
+      >
+        SigChat
+      </Text>
+      <Feather
+        name="camera"
+        size={24}
+        color="black"
+        style={{ marginHorizontal: 10 }}
+      />
+      <Feather
+        name="edit-2"
+        size={24}
+        color="black"
+        style={{ marginHorizontal: 10 }}
+      />
+    </View>
+  );
+};
+
+const ChatRoomHeader = (props) => {
+  const { width } = useWindowDimensions();
+
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        justifyContent: "space-between",
+        width: width - 24,
+        marginLeft: -26,
+        padding: 10,
+        alignItems: "center"
+      }}
+    >
+      <Image
+        source={{ uri: "https://randomuser.me/api/portraits/lego/1.jpg" }}
+        style={{ width: 30, height: 30, borderRadius: 30 }}
+      />
+      <Text
+        style={{
+          flex: 1,
+          marginLeft: 10,
+          fontWeight: "bold"
+        }}
+      >
+        {props.children}
+      </Text>
+      <Feather
+        name="camera"
+        size={24}
+        color="black"
+        style={{ marginHorizontal: 10 }}
+      />
+      <Feather
+        name="edit-2"
+        size={24}
+        color="black"
+        style={{ marginHorizontal: 10 }}
+      />
+    </View>
+  );
+};
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.

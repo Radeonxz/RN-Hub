@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { TextInput } from "react-native";
+import {
+  TextInput,
+  Pressable,
+  KeyboardAvoidingView,
+  Platform
+} from "react-native";
 import {
   SimpleLineIcons,
   Feather,
@@ -14,8 +19,26 @@ import styles from "./styles";
 export default function MessageInput() {
   const [message, setMessage] = useState<string>("");
 
+  const onPress = () => {
+    if (message) {
+      sendMessage();
+    } else {
+      onPlusClicked();
+    }
+  };
+
+  const sendMessage = () => {
+    setMessage("");
+  };
+
+  const onPlusClicked = () => {};
+
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={100}
+    >
       <View style={styles.inputContainer}>
         <SimpleLineIcons
           name="emotsmile"
@@ -37,13 +60,13 @@ export default function MessageInput() {
           color="black"
         />
       </View>
-      <View style={styles.buttonContainer}>
+      <Pressable onPress={onPress} style={styles.buttonContainer}>
         {message ? (
           <Ionicons name="send" size={18} color="white" style={styles.icon} />
         ) : (
           <AntDesign name="plus" size={24} color="white" style={styles.icon} />
         )}
-      </View>
-    </View>
+      </Pressable>
+    </KeyboardAvoidingView>
   );
 }

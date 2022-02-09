@@ -1,4 +1,5 @@
 import { FlatList, SafeAreaView } from "react-native";
+import { useRoute, useNavigation } from "@react-navigation/core";
 
 import { Text, View } from "../../components/Themed";
 
@@ -8,6 +9,11 @@ import MessageInput from "../../components/MessageInput";
 import styles from "./styles";
 
 export default function ChatRoomScreen() {
+  const route = useRoute();
+  const navigation = useNavigation();
+
+  navigation.setOptions({ title: route.params?.id });
+
   return (
     <SafeAreaView style={styles.page}>
       <FlatList
